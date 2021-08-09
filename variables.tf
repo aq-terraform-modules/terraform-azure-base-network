@@ -24,6 +24,7 @@ variable "subnets" {
     {
       name = "subnet-private"
       address_prefix = "10.0.20.0/24"
+      service_endpoints = []
     }
   ]
 }
