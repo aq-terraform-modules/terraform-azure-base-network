@@ -40,7 +40,7 @@ variable "nsg_names" {
 }
 
 variable "nsg_rules" {
-  type = map(any)
+  type = any
   description = "A map of nsg name to nsg rule"
   default = {
     "nsg-subnet-public" = [
