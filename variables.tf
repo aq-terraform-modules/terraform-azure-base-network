@@ -19,6 +19,7 @@ variable "subnets" {
     {
       name = "subnet-public"
       address_prefix = "10.0.10.0/24"
+      service_endpoints = []
     },
     {
       name = "subnet-private"
@@ -34,7 +35,7 @@ variable "nsg_names" {
 }
 
 variable "nsg_rules" {
-  type = map(any)
+  type = map(list(any))
   description = "A map of nsg name to nsg rule"
   default = {
     "nsg-subnet-public" = [
