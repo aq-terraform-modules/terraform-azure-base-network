@@ -1,9 +1,19 @@
-output "subnet_ids" {
+output "public_subnet_ids" {
   description = "The ids of subnets created inside the new vNet"
-  value       = azurerm_subnet.subnet.*.id
+  value       = azurerm_subnet.subnet-public.*.id
 }
 
-output "subnet_names" {
+output "public_subnet_names" {
   description = "The names of subnets created inside the new vNet"
-  value       = azurerm_subnet.subnet.*.name
+  value       = azurerm_subnet.subnet-public.*.name
+}
+
+output "private_subnet_ids" {
+  description = "The ids of subnets created inside the new vNet"
+  value       = azurerm_subnet.subnet-private.*.id
+}
+
+output "private_subnet_names" {
+  description = "The names of subnets created inside the new vNet"
+  value       = azurerm_subnet.subnet-private.*.name
 }
