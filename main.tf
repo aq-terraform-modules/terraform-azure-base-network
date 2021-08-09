@@ -65,5 +65,5 @@ locals {
 resource "azurerm_subnet_network_security_group_association" "nsg-associate" {
   for_each = azurerm_subnet.subnets
   subnet_id = each.id
-  network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${each.name}", azurerm_network_security_group.nsg-default.id)
+  network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${each.name}", azurerm_network_security_group.nsg_default.id)
 }
