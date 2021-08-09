@@ -14,17 +14,21 @@ variable "address_space" {
 
 variable "subnets" {
   description = "Subnets information"
-  type        = list(any)
+  type        = list(map(any))
   default     = [
     {
       name = "subnet-public"
       address_prefix = "10.0.10.0/24"
       service_endpoints = []
+      enforce_private_link_endpoint_network_policies = false
+      enforce_private_link_service_network_policies = false
     },
     {
       name = "subnet-private"
       address_prefix = "10.0.20.0/24"
       service_endpoints = []
+      enforce_private_link_endpoint_network_policies = false
+      enforce_private_link_service_network_policies = false
     }
   ]
 }
