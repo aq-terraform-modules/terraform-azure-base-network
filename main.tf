@@ -57,13 +57,19 @@ locals {
     for index, nsg in azurerm_network_security_group.nsg_defined :
       nsg.name => nsg.id
   }
+
+  
+  azurerm_subnets = {
+    for index, subnet in azurerm_subnet.subnets :
+      subnet.name => subnet.id
+  }
 }
 
 # nsg-subnet-public ==> id
 # nsg-subnet-private ==> id
 
 resource "azurerm_subnet_network_security_group_association" "nsg-associate" {
-  for_each = azurerm_subnet.subnets
-  subnet_id = each.id
-  network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${each.name}", azurerm_network_security_group.nsg_default.id)
+  for_each = local.azurerm_subnets
+  subnet_id = each.value
+  network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${each.key}", azurerm_network_security_group.nsg_default.id)
 }
