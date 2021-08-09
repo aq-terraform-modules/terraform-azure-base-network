@@ -29,7 +29,7 @@ variable "subnet_private" {
   default     = [
     {
       name = "subnet-private"
-      cidr = "10.0.20.0/24"
+      address_prefix = "10.0.20.0/24"
     }
   ]
 }
