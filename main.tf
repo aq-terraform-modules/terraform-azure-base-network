@@ -1,3 +1,16 @@
+locals {
+  azurerm_nsgs = {
+    for index, nsg in azurerm_network_security_group.nsg_defined :
+      nsg.name => nsg.id
+  }
+
+  
+  azurerm_subnets = {
+    for index, subnet in azurerm_subnet.subnets :
+      subnet.name => subnet.id
+  }
+}
+
 resource "azurerm_resource_group" "vnet_rg" {
   location = var.location
   name = "${var.name_prefix}-WLRG"
@@ -51,22 +64,6 @@ resource "azurerm_network_security_group" "nsg_default" {
   location = var.location
   resource_group_name = azurerm_resource_group.vnet_rg.name
 }
-
-locals {
-  azurerm_nsgs = {
-    for index, nsg in azurerm_network_security_group.nsg_defined :
-      nsg.name => nsg.id
-  }
-
-  
-  azurerm_subnets = {
-    for index, subnet in azurerm_subnet.subnets :
-      subnet.name => subnet.id
-  }
-}
-
-# nsg-subnet-public ==> id
-# nsg-subnet-private ==> id
 
 resource "azurerm_subnet_network_security_group_association" "nsg-associate" {
   for_each = local.azurerm_subnets

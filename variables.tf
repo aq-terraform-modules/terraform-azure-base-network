@@ -22,7 +22,11 @@ variable "subnets" {
     },
     {
       name = "subnet-private"
-      address_prefix = "10.0.10.0/24"
+      address_prefix = "10.0.20.0/24"
+    },
+    {
+      name = "subnet-database"
+      address_prefix = "10.0.30.0/24"
     }
   ]
 }
