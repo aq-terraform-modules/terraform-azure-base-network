@@ -14,7 +14,7 @@ variable "address_space" {
 
 variable "subnets" {
   description = "Subnets information"
-  type        = list(any)
+  type        = list(map(string))
   default     = [
     {
       name = "subnet-public"
@@ -34,7 +34,7 @@ variable "nsg_names" {
 }
 
 variable "nsg_rules" {
-  type = map(list(any))
+  type = map(list(map(string)))
   description = "A map of nsg name to nsg rule"
   default = {
     "nsg-subnet-public" = [
