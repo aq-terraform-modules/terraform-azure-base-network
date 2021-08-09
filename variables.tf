@@ -14,7 +14,7 @@ variable "address_space" {
 
 variable "subnets" {
   description = "Subnets information"
-  type        = list(map(string))
+  type        = list(map(any))
   default     = [
     {
       name = "subnet-public"
