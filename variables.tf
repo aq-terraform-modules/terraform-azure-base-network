@@ -15,13 +15,13 @@ variable "address_space" {
 variable "subnet_names" {
   type = list(string)
   description = "A list of subnet name inside the VNET"
-  default = ["subnet-public", "subnet-private", "subnet-database"]
+  default = ["subnet-public", "subnet-private"]
 }
 
 variable "subnet_prefixes" {
   type = list(string)
   description = "A list of subnet inside the VNET"
-  default = ["10.0.10.0/24", "10.0.20.0/24", "10.0.30.0/24"]
+  default = ["10.0.10.0/24", "10.0.20.0/24"]
 }
 
 variable "subnet_service_endpoints" {
