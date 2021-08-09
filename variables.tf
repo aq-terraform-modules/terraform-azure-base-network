@@ -45,7 +45,7 @@ variable "subnet_enforce_private_link_service_network_policies" {
 variable "nsg_names" {
   type = list(string)
   description = "A list of NSG name"
-  default = ["nsg-public", "nsg-private"]
+  default = ["nsg-subnet-public", "nsg-subnet-private"]
 }
 
 variable "nst_rules" {
@@ -53,7 +53,7 @@ variable "nst_rules" {
   description = "A map of nsg name to nsg rule"
   default = {
     "nsg-public" : [
-      
+
     ],
     "nsg-private" : [
 

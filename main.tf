@@ -31,7 +31,7 @@ resource "azurerm_network_security_group" "nsg-defined" {
 
 resource "azurerm_network_security_group" "nsg-default" {
   count = length(var.subnet_names) > length(var.nsg_names) ? 1 : 0
-  name = "nsg-default"
+  name = "nsg-subnet-default"
   location = var.location
   resource_group_name = azurerm_resource_group.vnet-rg.name
 }
