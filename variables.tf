@@ -12,24 +12,17 @@ variable "address_space" {
   default = ["10.0.0.0/16"]
 }
 
-variable "subnet_public" {
-  description = "Private subnet information"
+variable "subnets" {
+  description = "Subnets information"
   type        = list(any)
   default     = [
     {
       name = "subnet-public"
       address_prefix = "10.0.10.0/24"
-    }
-  ]
-}
-
-variable "subnet_private" {
-  description = "Private subnet information"
-  type        = list(any)
-  default     = [
+    },
     {
       name = "subnet-private"
-      address_prefix = "10.0.20.0/24"
+      address_prefix = "10.0.10.0/24"
     }
   ]
 }
