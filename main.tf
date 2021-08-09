@@ -39,5 +39,5 @@ resource "azurerm_network_security_group" "nsg-default" {
 resource "azurerm_subnet_network_security_group_association" "nsg-associate" {
   count = length(var.subnet_names)
   subnet_id = azurerm_subnet.subnet[count.index].id
-  network_security_group_id = azurerm_network_security_group.nsg[count.index] != null ? azurerm_network_security_group.nsg[count.index].id : azurerm_network_security_group.nsg-default.id
+  network_security_group_id = azurerm_network_security_group.nsg-defined[count.index] != null ? azurerm_network_security_group.nsg-defined[count.index].id : azurerm_network_security_group.nsg-default.id
 }
