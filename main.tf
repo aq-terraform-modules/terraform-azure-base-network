@@ -1,10 +1,13 @@
 locals {
+  # Aggregate all nsgs into a list of map
+  # ["nsg-subnet-public" = "id", "nsg-subnet-private" = "id"]
   azurerm_nsgs = {
     for index, nsg in azurerm_network_security_group.nsg_defined :
       nsg.name => nsg.id
   }
 
-  
+  # Aggregate all subnets into a list of map
+  # ["subnet-public" = "id", "subnet-private" = "id", "subnet-database" = "id"]
   azurerm_subnets = {
     for index, subnet in azurerm_subnet.subnets :
       subnet.name => subnet.id
@@ -65,6 +68,9 @@ resource "azurerm_network_security_group" "nsg_default" {
   resource_group_name = azurerm_resource_group.vnet_rg.name
 }
 
+# Every subnet need a nsg
+# If the nsg-<subnet-name> is available, it will associate the nsg to the subnet
+# If the nsg-<subnet-name> is not exist, it will associate the default nsg to the subnet
 resource "azurerm_subnet_network_security_group_association" "nsg-associate" {
   for_each = local.azurerm_subnets
   subnet_id = each.value

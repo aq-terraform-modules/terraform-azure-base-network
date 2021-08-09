@@ -23,10 +23,6 @@ variable "subnets" {
     {
       name = "subnet-private"
       address_prefix = "10.0.20.0/24"
-    },
-    {
-      name = "subnet-database"
-      address_prefix = "10.0.30.0/24"
     }
   ]
 }
@@ -41,7 +37,7 @@ variable "nsg_rules" {
   type = map(list(any))
   description = "A map of nsg name to nsg rule"
   default = {
-    "nsg-subnet-public" : [
+    "nsg-subnet-public" = [
       {
         name = "HTTP"
         priority = "100"
