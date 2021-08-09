@@ -16,9 +16,9 @@ resource "azurerm_subnet" "subnet-public" {
   resource_group_name = azurerm_resource_group.vnet-rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes = [var.subnet_public[count.index]["address_prefix"]]
-  service_endpoints = try(var.subnet_public[count.index]["service_endpoints"], null)
-  enforce_private_link_endpoint_network_policies = try(var.subnet_public[count.index]["enforce_private_link_endpoint_network_policies"], false)
-  enforce_private_link_service_network_policies = try(var.subnet_public[count.index]["enforce_private_link_service_network_policies"], false)
+  service_endpoints = lookup(var.subnet_public[count.index], "service_endpoints", null)
+  enforce_private_link_endpoint_network_policies = lookup(var.subnet_public[count.index], "enforce_private_link_endpoint_network_policies", false)
+  enforce_private_link_service_network_policies = lookup(var.subnet_public[count.index], "enforce_private_link_service_network_policies", false)
 }
 
 resource "azurerm_subnet" "subnet-private" {
@@ -27,9 +27,9 @@ resource "azurerm_subnet" "subnet-private" {
   resource_group_name = azurerm_resource_group.vnet-rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes = [var.subnet_private[count.index]["address_prefix"]]
-  service_endpoints = try(var.subnet_private[count.index]["service_endpoints"], null)
-  enforce_private_link_endpoint_network_policies = try(var.subnet_private[count.index]["enforce_private_link_endpoint_network_policies"], false)
-  enforce_private_link_service_network_policies = try(var.subnet_private[count.index]["enforce_private_link_service_network_policies"], false)
+  service_endpoints = lookup(var.subnet_private[count.index], "service_endpoints", null)
+  enforce_private_link_endpoint_network_policies = lookup(var.subnet_private[count.index], "enforce_private_link_endpoint_network_policies", false)
+  enforce_private_link_service_network_policies = lookup(var.subnet_private[count.index], "enforce_private_link_service_network_policies", false)
 }
 
 resource "azurerm_network_security_group" "nsg-defined" {
