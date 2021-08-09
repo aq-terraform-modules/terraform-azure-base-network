@@ -27,6 +27,21 @@ resource "azurerm_network_security_group" "nsg-defined" {
   location = var.location
   resource_group_name = azurerm_resource_group.vnet-rg.name
   # security_rule = lookup(var.security_rules, var.nsg_names[count.index], null)
+
+  
+  dynamic "security_rule" {
+    for_each = length(lookup(var.nsg_rules, var.nsg_names[count.index], null)) > 0 ? lookup(var.nsg_rules, var.nsg_names[count.index]) : []
+
+    name = security_rule["name"]
+    priority = security_rule["priority"]
+    direction = security_rule["direction"]
+    access = security_rule["access"]
+    protocol = security_rule["protocol"]
+    source_port_range = security_rule["source_port_range"]
+    destination_port_range = security_rule["destination_port_range"]
+    source_address_prefix = security_rule["source_address_prefix"]
+    destination_address_prefix = security_rule["destination_address_prefix"]
+  }
 }
 
 resource "azurerm_network_security_group" "nsg-default" {

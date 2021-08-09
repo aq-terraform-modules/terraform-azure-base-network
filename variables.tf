@@ -48,15 +48,55 @@ variable "nsg_names" {
   default = ["nsg-subnet-public", "nsg-subnet-private"]
 }
 
-variable "nst_rules" {
-  type = map(any)
+variable "nsg_rules" {
+  type = map(list(any))
   description = "A map of nsg name to nsg rule"
   default = {
     "nsg-public" : [
-
-    ],
-    "nsg-private" : [
-
+      {
+        name = "HTTP"
+        priority = "100"
+        direction = "Inbound"
+        access = "Allow"
+        protocol = "Tcp"
+        source_port_range = "*"
+        destination_port_range = "80"
+        source_address_prefix = "*"
+        destination_address_prefix  = "*"
+      },
+      {
+        name = "HTTPS"
+        priority = "110"
+        direction = "Inbound"
+        access = "Allow"
+        protocol = "Tcp"
+        source_port_range = "*"
+        destination_port_range = "443"
+        source_address_prefix = "*"
+        destination_address_prefix  = "*"
+      },
+      {
+        name = "SSH"
+        priority = "120"
+        direction = "Inbound"
+        access = "Allow"
+        protocol = "Tcp"
+        source_port_range = "*"
+        destination_port_range = "22"
+        source_address_prefix = "*"
+        destination_address_prefix  = "*"
+      },
+      {
+        name = "RDP"
+        priority = "130"
+        direction = "Inbound"
+        access = "Allow"
+        protocol = "Tcp"
+        source_port_range = "*"
+        destination_port_range = "3389"
+        source_address_prefix = "*"
+        destination_address_prefix  = "*"
+      }
     ]
   }
 }
