@@ -30,7 +30,7 @@ resource "azurerm_network_security_group" "nsg-defined" {
 
   
   dynamic "security_rule" {
-    for_each = length(lookup(var.nsg_rules, var.nsg_names[count.index], null)) > 0 ? lookup(var.nsg_rules, var.nsg_names[count.index]) : [{}]
+    for_each = lookup(var.nsg_rules, var.nsg_names[count.index], [{}])
 
     content {
       name = security_rule.value["name"]
