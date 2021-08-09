@@ -30,7 +30,6 @@ resource "azurerm_network_security_group" "nsg-defined" {
 }
 
 resource "azurerm_network_security_group" "nsg-default" {
-  count = length(azurerm_subnet.subnet) > length(azurerm_network_security_group.nsg-defined) ? 1 : 0
   name = "nsg-subnet-default"
   location = var.location
   resource_group_name = azurerm_resource_group.vnet-rg.name
@@ -39,5 +38,5 @@ resource "azurerm_network_security_group" "nsg-default" {
 resource "azurerm_subnet_network_security_group_association" "nsg-associate" {
   count = length(var.subnet_names)
   subnet_id = azurerm_subnet.subnet[count.index].id
-  network_security_group_id = count.index <= (length(azurerm_network_security_group.nsg-defined)-1) ? azurerm_network_security_group.nsg-defined[count.index].id : azurerm_network_security_group.nsg-default[0].id
+  network_security_group_id = count.index <= (length(azurerm_network_security_group.nsg-defined)-1) ? azurerm_network_security_group.nsg-defined[count.index].id : azurerm_network_security_group.nsg-default.id
 }
