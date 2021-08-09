@@ -33,8 +33,8 @@ resource "azurerm_subnet" "subnets" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes = [var.subnets[count.index]["address_prefix"]]
   service_endpoints = lookup(var.subnets[count.index], "service_endpoints", null)
-  enforce_private_link_endpoint_network_policies = lookup(var.subnets[count.index], "enforce_private_link_endpoint_network_policies", false)
-  enforce_private_link_service_network_policies = lookup(var.subnets[count.index], "enforce_private_link_service_network_policies", false)
+  enforce_private_link_endpoint_network_policies = lookup(var.subnets[count.index], "enforce_private_link_endpoint_network_policies", null)
+  enforce_private_link_service_network_policies = lookup(var.subnets[count.index], "enforce_private_link_service_network_policies", null)
 }
 
 resource "azurerm_network_security_group" "nsg_defined" {
