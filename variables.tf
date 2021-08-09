@@ -52,7 +52,7 @@ variable "nsg_rules" {
   type = map(list(any))
   description = "A map of nsg name to nsg rule"
   default = {
-    "nsg-public" : [
+    "nsg-subnet-public" : [
       {
         name = "HTTP"
         priority = "100"
