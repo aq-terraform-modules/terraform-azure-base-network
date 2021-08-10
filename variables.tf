@@ -85,6 +85,7 @@ variable "nsgs" {
         source_address_prefix = "*"
         destination_address_prefix  = "*"
       }
-    ]
+    ],
+    "subnet-private" = []
   }
 }

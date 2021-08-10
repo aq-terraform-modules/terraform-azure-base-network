@@ -48,17 +48,17 @@ resource "azurerm_subnet" "subnet_private" {
 
 resource "azurerm_network_security_group" "nsg_defined" {
   count = length(var.nsgs)
-  name = var.nsgs[count.index]
+  name = "nsg-${key(var.nsgs[count.index])}"
   location = var.location
   resource_group_name = azurerm_resource_group.vnet_rg.name
   # security_rule = lookup(var.security_rules, var.nsgs[count.index], null)
 
   
   dynamic "security_rule" {
-    for_each = lookup(var.nsg_rules, var.nsgs[count.index], [])
+    for_each = value(var.nsgs[count.index])
     
     content {
-      name = "nsg-${security_rule.value["name"]}"
+      name = security_rule.value["name"]
       priority = security_rule.value["priority"]
       direction = security_rule.value["direction"]
       access = security_rule.value["access"]
@@ -80,4 +80,9 @@ resource "azurerm_network_security_group" "nsg_default" {
 resource "azurerm_subnet_network_security_group_association" "subnet_public_associate" {
   subnet_id = azurerm_subnet.subnet_public.id
   network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${azurerm_subnet.subnet_public.name}", azurerm_network_security_group.nsg_default.id)
+}
+
+resource "azurerm_subnet_network_security_group_association" "subnet_private_associate" {
+  subnet_id = azurerm_subnet.subnet_private.id
+  network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${azurerm_subnet.subnet_private.name}", azurerm_network_security_group.nsg_default.id)
 }
