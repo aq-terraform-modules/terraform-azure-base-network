@@ -41,7 +41,7 @@ resource "azurerm_subnet" "subnet_private" {
 
 resource "azurerm_network_security_group" "nsg_defined" {
   count = length(var.nsgs)
-  name = "nsg-${key(var.nsgs[count.index])}"
+  name = "nsg-${keys(var.nsgs[count.index])}"
   location = var.location
   resource_group_name = azurerm_resource_group.vnet_rg.name
   # security_rule = lookup(var.security_rules, var.nsgs[count.index], null)
