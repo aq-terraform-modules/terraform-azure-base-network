@@ -40,15 +40,15 @@ resource "azurerm_subnet" "subnet_private" {
 }
 
 resource "azurerm_network_security_group" "nsg_defined" {
-  count = length(var.nsgs)
-  name = "nsg-${keys(var.nsgs[count.index])}"
+  for_each = var.nsgs
+  name = "nsg-${each.key}"
   location = var.location
   resource_group_name = azurerm_resource_group.vnet_rg.name
   # security_rule = lookup(var.security_rules, var.nsgs[count.index], null)
 
   
   dynamic "security_rule" {
-    for_each = values(var.nsgs[count.index])
+    for_each = each.value
     
     content {
       name = security_rule.value["name"]
