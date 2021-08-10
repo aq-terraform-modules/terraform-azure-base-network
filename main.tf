@@ -5,13 +5,6 @@ locals {
     for index, nsg in azurerm_network_security_group.nsg_defined :
       nsg.name => nsg.id
   }
-
-  # Aggregate all subnets into a list of map
-  # ["subnet-public" = "id", "subnet-private" = "id", "subnet-database" = "id"]
-  azurerm_subnets = {
-    for index, subnet in azurerm_subnet.subnets :
-      subnet.name => subnet.id
-  }
 }
 
 resource "azurerm_resource_group" "vnet_rg" {
@@ -55,7 +48,7 @@ resource "azurerm_network_security_group" "nsg_defined" {
 
   
   dynamic "security_rule" {
-    for_each = value(var.nsgs[count.index])
+    for_each = values(var.nsgs[count.index])
     
     content {
       name = security_rule.value["name"]
