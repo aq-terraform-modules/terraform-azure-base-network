@@ -34,10 +34,6 @@ resource "azurerm_subnet" "subnet_public" {
   service_endpoints                              = lookup(var.subnet_public, "service_endpoints", null)
   enforce_private_link_endpoint_network_policies = lookup(var.subnet_public, "enforce_private_link_endpoint_network_policies", null)
   enforce_private_link_service_network_policies  = lookup(var.subnet_public, "enforce_private_link_service_network_policies", null)
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 resource "azurerm_subnet" "subnet_private" {
@@ -48,10 +44,6 @@ resource "azurerm_subnet" "subnet_private" {
   service_endpoints                              = lookup(var.subnet_private, "service_endpoints", null)
   enforce_private_link_endpoint_network_policies = lookup(var.subnet_private, "enforce_private_link_endpoint_network_policies", null)
   enforce_private_link_service_network_policies  = lookup(var.subnet_private, "enforce_private_link_service_network_policies", null)
-
-  lifecycle {
-    ignore_changes = [tags]
-  }
 }
 
 resource "azurerm_network_security_group" "nsg_defined" {
