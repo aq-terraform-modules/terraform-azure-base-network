@@ -1,5 +1,9 @@
-variable "name_prefix" {
-  description = "Name prefix for all resources"
+variable "resource_group_name" {
+  description = "Resource group name"
+}
+
+variable "virtual_network_name" {
+  description = "Virtual network name"
 }
 
 variable "location" {

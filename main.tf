@@ -9,11 +9,11 @@ locals {
 
 resource "azurerm_resource_group" "vnet_rg" {
   location = var.location
-  name = "${var.name_prefix}-WLRG"
+  name = var.resource_group_name
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  name = "${var.name_prefix}-VNET"
+  name = var.virtual_network_name
   resource_group_name = azurerm_resource_group.vnet_rg.name
   location = var.location
   address_space = var.address_space
