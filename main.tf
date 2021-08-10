@@ -26,30 +26,39 @@ resource "azurerm_virtual_network" "vnet" {
   address_space = var.address_space
 }
 
-resource "azurerm_subnet" "subnets" {
-  count = length(var.subnets)
-  name = var.subnets[count.index]["name"]
+resource "azurerm_subnet" "subnet_public" {
+  name = var.subnet_public["name"]
   resource_group_name = azurerm_resource_group.vnet_rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes = [var.subnets[count.index]["address_prefix"]]
-  service_endpoints = lookup(var.subnets[count.index], "service_endpoints", null)
-  enforce_private_link_endpoint_network_policies = lookup(var.subnets[count.index], "enforce_private_link_endpoint_network_policies", null)
-  enforce_private_link_service_network_policies = lookup(var.subnets[count.index], "enforce_private_link_service_network_policies", null)
+  address_prefixes = [var.subnet_public["address_prefix"]]
+  service_endpoints = lookup(var.subnet_public, "service_endpoints", null)
+  enforce_private_link_endpoint_network_policies = lookup(var.subnet_public, "enforce_private_link_endpoint_network_policies", null)
+  enforce_private_link_service_network_policies = lookup(var.subnet_public, "enforce_private_link_service_network_policies", null)
+}
+
+resource "azurerm_subnet" "subnet_private" {
+  name = var.subnet_private["name"]
+  resource_group_name = azurerm_resource_group.vnet_rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes = [var.subnet_private["address_prefix"]]
+  service_endpoints = lookup(var.subnet_private, "service_endpoints", null)
+  enforce_private_link_endpoint_network_policies = lookup(var.subnet_private, "enforce_private_link_endpoint_network_policies", null)
+  enforce_private_link_service_network_policies = lookup(var.subnet_private, "enforce_private_link_service_network_policies", null)
 }
 
 resource "azurerm_network_security_group" "nsg_defined" {
-  count = length(var.nsg_names)
-  name = var.nsg_names[count.index]
+  count = length(var.nsgs)
+  name = var.nsgs[count.index]
   location = var.location
   resource_group_name = azurerm_resource_group.vnet_rg.name
-  # security_rule = lookup(var.security_rules, var.nsg_names[count.index], null)
+  # security_rule = lookup(var.security_rules, var.nsgs[count.index], null)
 
   
   dynamic "security_rule" {
-    for_each = lookup(var.nsg_rules, var.nsg_names[count.index], [])
+    for_each = lookup(var.nsg_rules, var.nsgs[count.index], [])
     
     content {
-      name = security_rule.value["name"]
+      name = "nsg-${security_rule.value["name"]}"
       priority = security_rule.value["priority"]
       direction = security_rule.value["direction"]
       access = security_rule.value["access"]
@@ -68,11 +77,7 @@ resource "azurerm_network_security_group" "nsg_default" {
   resource_group_name = azurerm_resource_group.vnet_rg.name
 }
 
-# Every subnet need a nsg
-# If the nsg-<subnet-name> is available, it will associate the nsg to the subnet
-# If the nsg-<subnet-name> is not exist, it will associate the default nsg to the subnet
-resource "azurerm_subnet_network_security_group_association" "nsg-associate" {
-  for_each = local.azurerm_subnets
-  subnet_id = each.value
-  network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${each.key}", azurerm_network_security_group.nsg_default.id)
+resource "azurerm_subnet_network_security_group_association" "subnet_public_associate" {
+  subnet_id = azurerm_subnet.subnet_public.id
+  network_security_group_id = lookup(local.azurerm_nsgs, "nsg-${azurerm_subnet.subnet_public.name}", azurerm_network_security_group.nsg_default.id)
 }

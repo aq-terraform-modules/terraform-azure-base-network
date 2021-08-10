@@ -12,38 +12,35 @@ variable "address_space" {
   default = ["10.0.0.0/16"]
 }
 
-variable "subnets" {
-  description = "Subnets information"
-  type        = list(any)
-  default     = [
-    {
-      name = "subnet-public"
-      address_prefix = "10.0.10.0/24"
-      service_endpoints = []
-      enforce_private_link_endpoint_network_policies = false
-      enforce_private_link_service_network_policies = false
-    },
-    {
-      name = "subnet-private"
-      address_prefix = "10.0.20.0/24"
-      service_endpoints = []
-      enforce_private_link_endpoint_network_policies = false
-      enforce_private_link_service_network_policies = false
-    }
-  ]
+variable "subnet_public" {
+  description = "Public subnet"
+  type = any
+  default = {
+    name = "subnet-public"
+    address_prefix = "10.0.10.0/24"
+    service_endpoints = []
+    enforce_private_link_endpoint_network_policies = false
+    enforce_private_link_service_network_policies = false
+  }
 }
 
-variable "nsg_names" {
-  type = list(string)
-  description = "A list of NSG name"
-  default = ["nsg-subnet-public", "nsg-subnet-private"]
+variable "subnet_private" {
+  description = "Public subnet"
+  type = any
+  default = {
+    name = "subnet-private"
+    address_prefix = "10.0.20.0/24"
+    service_endpoints = []
+    enforce_private_link_endpoint_network_policies = false
+    enforce_private_link_service_network_policies = false
+  }
 }
 
-variable "nsg_rules" {
+variable "nsgs" {
   type = any
   description = "A map of nsg name to nsg rule"
   default = {
-    "nsg-subnet-public" = [
+    "subnet-public" = [
       {
         name = "HTTP"
         priority = "100"
