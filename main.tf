@@ -10,6 +10,9 @@ locals {
 resource "azurerm_resource_group" "vnet_rg" {
   location = var.location
   name     = var.resource_group_name
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -17,6 +20,10 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.vnet_rg.name
   location            = var.location
   address_space       = var.address_space
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "azurerm_subnet" "subnet_public" {
@@ -27,6 +34,10 @@ resource "azurerm_subnet" "subnet_public" {
   service_endpoints                              = lookup(var.subnet_public, "service_endpoints", null)
   enforce_private_link_endpoint_network_policies = lookup(var.subnet_public, "enforce_private_link_endpoint_network_policies", null)
   enforce_private_link_service_network_policies  = lookup(var.subnet_public, "enforce_private_link_service_network_policies", null)
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "azurerm_subnet" "subnet_private" {
@@ -37,6 +48,10 @@ resource "azurerm_subnet" "subnet_private" {
   service_endpoints                              = lookup(var.subnet_private, "service_endpoints", null)
   enforce_private_link_endpoint_network_policies = lookup(var.subnet_private, "enforce_private_link_endpoint_network_policies", null)
   enforce_private_link_service_network_policies  = lookup(var.subnet_private, "enforce_private_link_service_network_policies", null)
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "azurerm_network_security_group" "nsg_defined" {
@@ -61,12 +76,20 @@ resource "azurerm_network_security_group" "nsg_defined" {
       destination_address_prefix = security_rule.value["destination_address_prefix"]
     }
   }
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "azurerm_network_security_group" "nsg_default" {
   name                = "nsg-subnet-default"
   location            = var.location
   resource_group_name = azurerm_resource_group.vnet_rg.name
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "subnet_public_associate" {
